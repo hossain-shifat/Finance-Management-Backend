@@ -35,15 +35,15 @@ async function run() {
 
         //get all transaction
         app.get("/transaction", async (req, res) => {
-            try {
-                const cursor = transactionCollection.find();
-                const result = await cursor.toArray();
-                res.send(result);
-            } catch (error) {
-                console.error("Error fetching transactions:", error);
-                res.status(500).send({ error: "Failed to fetch transactions" });
+            const email = req.query.email
+            const query = {}
+            if (email) {
+                query.user_email = email
             }
-        });
+            const cursor = transactionCollection.find(query)
+            const result = await cursor.toArray()
+            res.send(result)
+        })
 
         // overview (in home route)
         app.get("/overview", async (req, res) => {
