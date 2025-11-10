@@ -33,7 +33,7 @@ async function run() {
         const db = client.db('fin_ease_db')
         const transactionCollection = db.collection('transactions')
 
-
+        //get all transaction
         app.get("/transaction", async (req, res) => {
             try {
                 const cursor = transactionCollection.find();
@@ -57,9 +57,21 @@ async function run() {
             res.send(result)
         })
 
+        // get transaction (in my  route)
+        app.get("/my-transaction", async (req, res) => {
+            const email = req.query.email
+            const query = {}
+            if (email) {
+                query.user_email = email
+            }
+            const cursor = transactionCollection.find(query)
+            const result = await cursor.toArray()
+            res.send(result)
+        })
 
-        //create items (my transactions)
-        app.post("/transaction", async (req, res) => {
+
+        //create items (add transactions)
+        app.post("/add-transaction", async (req, res) => {
             const newProduct = req.body
             const result = await transactionCollection.insertOne(newProduct)
             res.send(result)
