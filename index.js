@@ -45,7 +45,20 @@ async function run() {
             }
         });
 
-        //create items
+        // overview (in home route)
+        app.get("/overview", async (req, res) => {
+            const email = req.query.email
+            const query = {}
+            if (email) {
+                query.user_email = email
+            }
+            const cursor = transactionCollection.find(query)
+            const result = await cursor.toArray()
+            res.send(result)
+        })
+
+
+        //create items (my transactions)
         app.post("/transaction", async (req, res) => {
             const newProduct = req.body
             const result = await transactionCollection.insertOne(newProduct)
