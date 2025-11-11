@@ -69,6 +69,14 @@ async function run() {
             res.send(result)
         })
 
+        // delete transaction (my transaction route)
+        app.delete('/my-transaction/:id', async (req, res) => {
+            const id = req.params.id
+            const query = { _id: new ObjectId(id) }
+            const result = await transactionCollection.deleteOne(query)
+            res.send(result)
+        })
+
 
         // get transaction (in my route)
         app.get("/my-transaction", async (req, res) => {
