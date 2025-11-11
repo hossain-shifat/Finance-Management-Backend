@@ -69,6 +69,14 @@ async function run() {
             res.send(result)
         })
 
+        //  get transaction by id (my transaction route)
+        app.get('/my-transaction/:id',async (req,res) => {
+            const id = req.params.id
+            const query = {_id: new ObjectId(id)}
+            const result = await transactionCollection.findOne(query)
+            res.send(result)
+        })
+
         // delete transaction (my transaction route)
         app.delete('/my-transaction/:id', async (req, res) => {
             const id = req.params.id
@@ -85,7 +93,7 @@ async function run() {
             if (email) {
                 query.user_email = email
             }
-            const cursor = transactionCollection.find(query)
+            const cursor = transactionCollection.find(query).sort({ date: 1 })
             const result = await cursor.toArray()
             res.send(result)
         })
