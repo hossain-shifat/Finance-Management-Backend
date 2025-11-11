@@ -1,5 +1,5 @@
 const express = require('express');
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 require('dotenv').config()
 const cors = require('cors');
 const app = express()
@@ -57,7 +57,20 @@ async function run() {
             res.send(result)
         })
 
-        // get transaction (in my  route)
+        // update transaction (my transaction route)
+        app.patch('/my-transaction/:id', async (req, res) => {
+            const id = req.params.id
+            const updateTransaction = req.body
+            const query = { _id: new ObjectId(id) }
+            const update = {
+                $set: updateTransaction
+            }
+            const result = await transactionCollection.updateOne(query, update)
+            res.send(result)
+        })
+
+
+        // get transaction (in my route)
         app.get("/my-transaction", async (req, res) => {
             const email = req.query.email
             const query = {}
