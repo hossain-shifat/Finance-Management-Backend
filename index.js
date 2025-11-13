@@ -102,6 +102,16 @@ async function run() {
             const id = req.params.id
             const updateTransaction = req.body
             const query = { _id: new ObjectId(id) }
+
+            const transaction = await transactionCollection.findOne(query);
+            if (!transaction) {
+                return res.status(404).send({ message: 'Transaction not found' });
+            }
+
+            if (transaction.user_email !== req.token_email) {
+                return res.status(403).send({ message: 'forbidden access' });
+            }
+
             const update = {
                 $set: updateTransaction
             }
