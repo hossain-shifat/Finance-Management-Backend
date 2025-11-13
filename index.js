@@ -66,6 +66,11 @@ async function run() {
         app.get("/transaction", verifyFirebaseToken, async (req, res) => {
             console.log(req.headers)
             const email = req.query.email
+
+            if (email !== req.token_email) {
+                return res.status(403).send({ message: 'forbidden access' });
+            }
+
             const query = {}
             if (email) {
                 query.user_email = email
@@ -78,6 +83,11 @@ async function run() {
         // overview (in home route)
         app.get("/overview", verifyFirebaseToken, async (req, res) => {
             const email = req.query.email
+
+            if (email !== req.token_email) {
+                return res.status(403).send({ message: 'forbidden access' });
+            }
+
             const query = {}
             if (email) {
                 query.user_email = email
@@ -119,6 +129,11 @@ async function run() {
         // get transactions (in my route)
         app.get("/my-transaction", verifyFirebaseToken, async (req, res) => {
             const email = req.query.email
+
+            if (email !== req.token_email) {
+                return res.status(403).send({ message: 'forbidden access' });
+            }
+
             const query = {}
             if (email) {
                 query.user_email = email
