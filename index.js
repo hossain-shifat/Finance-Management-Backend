@@ -123,7 +123,7 @@ async function run() {
             if (email) {
                 query.user_email = email
             }
-            const cursor = transactionCollection.find(query).sort({ date: 1, time: 1 })
+            const cursor = transactionCollection.find(query).sort({ date: -1, time: -1 })
             const result = await cursor.toArray()
             res.send(result)
         })
