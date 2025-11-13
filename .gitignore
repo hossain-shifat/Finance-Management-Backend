@@ -1,3 +1,5 @@
 node_modules
 .env
 fin-ease-firebase-adminsdk.json
+
+.vercel
